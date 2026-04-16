@@ -18,6 +18,26 @@ This project is for rapid prototyping of SwiftUI screens that match the Boozt de
 - **Warm neutrals for accent surfaces.** Use `Color.booztSurfaceContainer` (#EAE4DC), not cold grays.
 - **Typography stays light.** Weights 400–500 for almost everything. Bold (700) only for rare promo banners.
 - **Underlined text links** are the default.
+- **Color selectors on PDP always use product thumbnail images**, never plain color dots or circles.
+
+## Real Data via MapiService
+
+The project includes `MapiService.swift` — a client for Boozt's mobile API (MAPI) that fetches real product data including images from `booztcdn.com`.
+
+### Available methods
+- `MapiService.shared.search(query:)` — Search for products by keyword. Returns `[ProductItem]`.
+- `MapiService.shared.fetchProducts(navigationId:)` — Fetch products by navigation category ID. Returns `[ProductItem]`.
+
+### ProductItem model
+Both API methods return `ProductItem` which has: `brand`, `name`, `price`, `salePrice`, `imageURL`, `swatchColors`, `sizes`, `isOnSale`, `discountPercentage`, `formattedPrice`, `formattedSalePrice`.
+
+### When to use real data vs mock data
+- **Default to real data** when building screens that show product listings, search results, or product details. Use `AsyncImage(url: URL(string: item.imageURL))` for product images.
+- **Fall back to mock data** for structural prototypes, offline work, or when the API is not relevant (e.g. checkout flow, account screens). Use `ProductItem.mock` or `ProductItem.mockProducts`.
+- **Always include mock data in `#Preview`** blocks — previews can't make network calls.
+
+### No auth required for basic usage
+The search and navigation endpoints work without authentication. Auth (Apple Sign-In) is only needed for user-specific features.
 
 ## Code Conventions
 
@@ -30,21 +50,22 @@ This project is for rapid prototyping of SwiftUI screens that match the Boozt de
 - One file per screen: `FeatureNameView.swift` (View + ViewModel).
 - Reusable components: `Components/`.
 - Design tokens: `DesignSystem/` (Color+Boozt.swift, Font+Boozt.swift, Spacing.swift).
+- API layer: `MapiService.swift`, `ProductItem.swift`, `Color+HexString.swift` (at project root).
 
 ### SwiftUI Patterns
 - `#Preview` macro with mock data in every file.
 - `NavigationStack`, not `NavigationView`.
 - `@State` for local state, `@Environment` for DI.
 - SF Symbols for icons (closest match to Boozt's icon style).
+- `AsyncImage` for loading product images from URLs.
 
 ### Mock Data
 - Every screen must render with realistic data — Danish product names, plausible prices in DKK, real-sounding brand names.
-- Use `static let mock` on model types.
+- Use `ProductItem.mock` / `ProductItem.mockProducts` for previews.
 - No "Lorem ipsum" or placeholder text.
 
 ### What NOT To Do
 - No unit tests.
-- No networking or persistence — mock everything.
 - No third-party dependencies.
 - No modifications to the App entry point unless navigation requires it.
 - No border radius > 0 unless explicitly specified for a specific element.
