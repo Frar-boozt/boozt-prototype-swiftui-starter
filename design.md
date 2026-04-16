@@ -426,55 +426,64 @@ Content order from top to bottom:
 
 ---
 
-## Mobile Web Layout (< 768px)
+## Native iOS App Layout
 
-The site is fully responsive. Key breakpoints: `768px` (tablet/mobile transition), `576px`, `374px`. Below 768px the layout transforms significantly.
+> **IMPORTANT: This section describes the native iOS app, which is what SwiftUI prototypes should target. Do NOT use the mobile web patterns (hamburger menu, announcement bar, web-style header) in SwiftUI prototypes. Use native iOS navigation patterns instead.**
 
-### Responsive Breakpoints
-| Breakpoint | Behavior |
-|-----------|----------|
-| ≥ 1280px  | Full desktop layout |
-| 960–1279px | Desktop, narrower content |
-| 768–959px | Tablet — some layout shifts |
-| < 768px   | **Mobile layout** — single column, hamburger nav, bottom bar |
-| ≥ 374px   | Minor phone-size adjustments |
+### Native iOS vs Mobile Web — Key Differences
 
-### Mobile Header
-Replaces the full desktop navigation with a compact mobile header:
+The Boozt mobile web and the native iOS app share the same design language (colors, typography, spacing, components) but differ in navigation structure. **SwiftUI prototypes must follow the native iOS patterns, not the mobile web patterns.**
 
-- **Layout:** Single row — `☰ hamburger | Boozt logo (centered) | 🔍 search | 👤 account`
-- **Hamburger (☰):** Left-aligned, opens full-screen side menu drawer
-- **Logo:** Centered serif wordmark "Boozt"
-- **Icons:** Search and Account only — cart/wishlist move to bottom nav
-- **Announcement bar:** Still present above header, scrollable carousel with promo messages
-- **App install banner:** Smart banner prompting app download ("Boozt App ★★★★ 4.5 — Installer"), dismissible with X
-- **No category links** in header — all navigation moves to hamburger side menu
+| Pattern | Mobile Web (DO NOT USE) | Native iOS App (USE THIS) |
+|---------|------------------------|---------------------------|
+| Global navigation | Hamburger menu + logo header | Bottom tab bar (TabView) |
+| Page navigation | Breadcrumbs, web-style back links | Standard iOS NavigationStack with back button |
+| Header on inner pages | Full header with hamburger + logo + search + account | No header — just the iOS navigation bar with back button + title |
+| Announcement bar | Persistent carousel bar at top | Not present on inner pages (may appear on Home tab only) |
+| Search | Search icon in header | Dedicated "Søg" tab in bottom nav |
+| Cart/Wishlist | Icons in header or bottom bar | Dedicated tabs in bottom nav ("Kurv", "Ønskeliste") |
+| Account | Icon in header | Dedicated "Konto" tab in bottom nav |
 
-### Mobile Side Menu (Hamburger Drawer)
-Full-screen slide-in panel from the left. Replaces desktop's horizontal category nav.
+### App Navigation Structure (TabView)
 
-- **Category list:** Vertical list with category name + product count (e.g. "Klänningar 1234", "Västar 546")
-- **Hierarchy:** Top-level shows subcategories of current gender/department context
-- **Each row:** Category name left-aligned, count right-aligned, chevron for drill-down
-- **Favorites section:** 2-column grid of recently favorited product thumbnails + "View all" button
-- **Recently Viewed section:** 2-column grid of recently viewed product thumbnails + "View all" button
-- **Close:** X button or swipe to dismiss
+The app uses a standard iOS `TabView` as the root navigation. Each tab contains its own `NavigationStack`.
+
+**5 tabs:**
+1. **Boozt** (house or "B" icon) — Home. Label: "Boozt"
+2. **Søg** (magnifying glass icon) — Search/Browse. Label: "Søg"
+3. **Kurv** (shopping bag icon) — Cart. Label: "Kurv"
+4. **Ønskeliste** (heart icon) — Wishlist. Label: "Ønskeliste"
+5. **Konto** (person icon) — Account. Label: "Konto"
+
+- **Tab bar style:** White background, top border/divider
+- **Icons:** SF Symbols, outlined style, muted gray when inactive
+- **Active state:** Darker/filled icon
+- **Tab bar is always visible** across all screens (standard iOS behavior)
+- **Each tab has its own NavigationStack** — pushing a screen (e.g. PLP → PDP) keeps the tab bar visible
+
+### Inner Page Navigation
+
+When a user drills into a category or product, the screen is pushed onto the tab's NavigationStack:
+
+- **Back button:** Standard iOS back chevron (`<`) + parent category name (e.g. "< Kvinder")
+- **No hamburger menu, no logo header, no announcement bar** on inner pages
+- **Page title:** Displayed as large text below the back button (e.g. "Kjoler"), NOT in the navigation bar title position. Use a large inline heading, not `.navigationTitle()`.
+- **The bottom tab bar stays visible** — it does not hide on inner pages
 
 ### Mobile Bottom Navigation Bar
-Fixed bottom tab bar, always visible. This is a key mobile-specific component (Figma component: "App Bottom navigation", 375×176px).
+Fixed bottom tab bar, always visible. This is a key component (Figma component: "App Bottom navigation", 375×176px).
 
 - **Position:** Fixed to bottom of viewport
 - **Background:** White with top border/divider
-- **5 tab icons equally spaced:**
-  1. **B** (Boozt logo) — Home
-  2. **🔍≡** (Search + filter icon) — Search/Browse
-  3. **🛒** (Shopping bag) — Cart
-  4. **♡** (Heart) — Wishlist
-  5. **👤** (Person) — Account
+- **5 tab icons equally spaced** with labels below:
+  1. **B** (Boozt logo icon) — "Boozt"
+  2. **🔍** (Magnifying glass) — "Søg"
+  3. **🛍** (Shopping bag) — "Kurv"
+  4. **♡** (Heart) — "Ønskeliste"
+  5. **👤** (Person) — "Konto"
 - **Icons:** Outlined style, muted gray when inactive
 - **Active state:** Darker/filled icon
-- **Above the tab bar:** Optional contextual info bar (e.g. "Label / Value" for promotions or delivery info)
-- **Home indicator:** iOS-style bottom bar below tabs
+- **Home indicator:** iOS-style bottom safe area below tabs
 
 ### Mobile Homepage
 Same content blocks as desktop but adapted to single-column:
