@@ -236,15 +236,19 @@ These are the official Panda design system color tokens:
 - **"sponsoreret":** Small text label above product card, 11px, muted
 
 ### Product Cards
-- **Layout:** Vertical — image on top, info below
-- **Image:** Full-width, light gray background (`#F5F5F5`), portrait aspect ratio (~3:4)
-- **Brand name:** 13px, weight 400, black — with heart icon right-aligned
-- **Product name:** 12–13px, weight 400, muted
-- **Color swatches:** Small colored dots + size text inline (on product cards only — PDP uses product thumbnail images for color selection, never plain color dots)
-- **Price:** 13px, weight 400, black
-- **Sale price:** `#D90225` (red), old price in `#757575` with line-through + optional discount percentage pill badge (e.g. "-30%") with `#E5E5E8` background, positioned inline after the strikethrough price
+- **Layout:** Vertical — large image on top, info stacked below. The image is the dominant element.
+- **Image:** Full-width within card, light gray background (`#F5F5F5`), portrait aspect ratio (~3:4). Product images from booztcdn.com.
+- **Wishlist heart:** Overlaid top-right on the product image (not inline with brand name)
+- **Deal badges:** Overlaid bottom-left on the product image. Can have multiple side by side (e.g. "15% deal" red badge + "20 Extra" green/teal badge). Small text, colored backgrounds.
+- **"New" label:** Below image, above brand name. Plain text, not a badge.
+- **Brand name:** 13px, weight 400, black
+- **Product name:** 12–13px, weight 400, muted color, truncated with ellipsis
+- **Color dots + sizes:** Small colored circles + separator + size labels inline (e.g. "●●●● + · S M L XL"). On product cards use color dots; PDP uses product thumbnail images for color selection.
+- **Price:** 13px, weight 400. Red (`#D90225`) if on sale, black if regular.
+- **Sale price layout:** Red sale price + strikethrough original price in `#757575` + optional "-XX%" discount pill badge with `#E5E5E8` background
+- **Secondary price line** (optional): Muted text for club/extra pricing (e.g. "500 kr with ExtraX")
 - **No card borders, no shadows, no border radius**
-- **Hover:** Image swap to alternate product photo
+- **Hover (desktop only):** Image swap to alternate product photo
 
 ### Navigation
 
@@ -491,29 +495,39 @@ Same content blocks as desktop but adapted to single-column:
 - **Quick-nav chips:** 2-column grid, horizontally scrollable
 
 ### Mobile Product Listing Page (PLP)
-Major layout change — **no sidebar**, filters become action buttons.
+Major layout change — **no sidebar**, filters become compact inline controls.
 
 #### Header Area
-- **Breadcrumbs:** Still present (`Kvinder / Tøj /`)
-- **Page heading:** Category name as H1, slightly smaller than desktop
-- **Product count:** Below heading (e.g. "4364 produkter")
-
-#### Filter & Sort Row
-- **Two action buttons** side by side (replacing desktop's horizontal filter chips):
-  - **"Filt..." (Filter)** — icon + text, opens full-screen filter panel as a sheet/modal
-  - **"So..." (Sortering)** — icon + text, opens sort options
-- **Below:** Horizontal scrollable row of quick-filter chips: "Kategorier 🔳", "Produktfarve", "Mærker", "Videre..."
-- **No left sidebar** — category tree is accessible via "Kategorier" chip or hamburger menu
+- **Back chevron** (`<`) top-left — navigates to parent category
+- **Page title:** Category name as large heading (e.g. "New arrivals", "Kjoler") — `displayMedium` or `displayLarge`
+- **Product count + Filter + Sort row:** All inline on one line:
+  - Left: product count (e.g. "65 products")
+  - Right: **"Filter"** with filter icon + active filter count badge (e.g. "Filter ④") + **"Sorting"** with sort icon
+  - Both are compact text buttons, NOT full-width action buttons
+- **Category tabs:** Horizontal scrollable row of text tabs below the filter row (e.g. "Dresses | Jackets | Sport | Home"). These are plain text labels, not outlined chips. Active tab may be bold or underlined. Scrollable if more tabs than screen width.
+- **No breadcrumbs** on the mobile PLP — the back chevron replaces them
 
 #### Product Grid
 - **2 columns** (fixed, no density toggle on mobile)
 - **Gap:** ~8px (`spacing/s`)
-- **Product cards:** Same info structure as desktop but more compact
-  - Brand name + heart icon
-  - Product name (may truncate)
-  - Size/color info
-  - Price
-- **Personalization banner:** Full-width, same as desktop but stacked text
+- **Product cards — mobile layout (top to bottom):**
+  1. **Product image** — fills the card width, light gray background (`#F5F5F5`), portrait aspect ratio (~3:4). This is the dominant element.
+  2. **Wishlist heart** — overlaid top-right on the product image (circular button or just heart icon)
+  3. **Deal badges** — overlaid bottom-left on the product image (e.g. "15% deal" in red background, "20 Extra" in green/teal background). Multiple badges can stack horizontally.
+  4. **"New" label** — below the image, above brand name. Plain text, not a badge.
+  5. **Brand name** — left-aligned, `bodySmall` (13px), weight 400
+  6. **Product name** — below brand, muted color, `bodySmall`, truncated with ellipsis if too long
+  7. **Color dots + sizes inline** — row of small colored circles + "·" separator + size labels (e.g. "●●●● + · S M L XL"). If many colors, show first few + "+" count.
+  8. **Price** — `bodySmall`, **red** if on sale (`Color.booztSalePrice`), black if regular price
+  9. **Secondary price line** (optional) — muted text showing club/extra price (e.g. "500 kr with ExtraX")
+- **No card borders, no shadows, no border radius** — same as desktop
+
+#### Editorial Content in Grid
+- **Editorial blocks can appear between product rows** — e.g. a lifestyle section with heading, description, and "Read more →" CTA. These break up the product grid and are full-width.
+
+#### Bottom of Page
+- **Infinite scroll** or lazy loading as user scrolls
+- **Bottom tab bar** is always visible (see Mobile Bottom Navigation Bar section)
 
 ### Mobile Product Detail Page (PDP)
 Transforms from side-by-side desktop layout to fully stacked single column.
