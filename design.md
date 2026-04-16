@@ -240,9 +240,9 @@ These are the official Panda design system color tokens:
 - **Image:** Full-width, light gray background (`#F5F5F5`), portrait aspect ratio (~3:4)
 - **Brand name:** 13px, weight 400, black — with heart icon right-aligned
 - **Product name:** 12–13px, weight 400, muted
-- **Color swatches:** Small colored dots + size text inline
+- **Color swatches:** Small colored dots + size text inline (on product cards only — PDP uses product thumbnail images for color selection, never plain color dots)
 - **Price:** 13px, weight 400, black
-- **Sale price:** `#D90225` (red), old price in `#757575` with line-through
+- **Sale price:** `#D90225` (red), old price in `#757575` with line-through + optional discount percentage pill badge (e.g. "-30%") with `#E5E5E8` background, positioned inline after the strikethrough price
 - **No card borders, no shadows, no border radius**
 - **Hover:** Image swap to alternate product photo
 
@@ -399,9 +399,9 @@ Content order from top to bottom:
 1. **Badge:** "Ny sæson" tag if applicable
 2. **Brand name:** `titleLarge` (17px), weight 400
 3. **Product name + category:** Subtitle text, e.g. "Belted Striped Cotton Shirtdress - Midi kjoler"
-4. **Price:** `titleMedium` (15px), weight 500 — with info circle icon for price breakdown
+4. **Price:** `titleMedium` (15px), weight 500 — with info circle icon (ⓘ) for price breakdown. **Sale price layout:** Red sale price + strikethrough original price + "-XX%" discount pill badge (e.g. "-30%") with light gray background
 5. **Club benefits:** "Mine Club Boozt fordele" section with discount badges (e.g. "Sport 15%")
-6. **Color selector:** "Farve: [color name]" label + row of thumbnail images showing the product in each color. Selected color has a blue checkmark overlay and thicker border
+6. **Color selector:** "Farve: [color name]" label + row of **product thumbnail images** showing the product in each available color. **Never plain color dots/circles** — always actual product photos. Selected color has a blue checkmark circle overlay in the top-right corner + thicker border. Thumbnail size ~60×60px, square, with 1px border
 7. **Size selector:** "Vælg størrelse (EU)" label with tab to "Brand størrelser". Row of square buttons (e.g. "32 | 34 | 36 | 38 | 40"). Unavailable sizes are grayed out
 8. **Size guide link:** "Størrelsesguide >" text link
 9. **Add to cart row:** Full-width dark CTA button "Læg i kurv" with shopping bag icon + separate wishlist heart button to the right
@@ -523,23 +523,27 @@ Transforms from side-by-side desktop layout to fully stacked single column.
 - **Dot pagination** at bottom of image (indicates current photo position)
 - **Swipe left/right** to browse product photos
 - **Single image visible at a time** (not grid)
+- **Light gray background** (`#F5F5F5`) behind product image
+- **"Ny sæson" badge** overlaid top-left on the image area
+- **Wishlist heart button** — circular, overlaid top-right of the image area (not below CTA)
 
 #### Product Info (Below Image)
 All product info stacks vertically below the image carousel — **not sticky**, just scrolls naturally.
 
 Content order (same as desktop but stacked):
-1. Badge, Brand name, Product name + category
-2. Price
-3. Club benefits
-4. Color selector (thumbnail row, horizontally scrollable if many)
-5. Size selector (button row, wraps to multiple lines if needed)
-6. Size guide link
-7. **"Læg i kurv" CTA** — Full-width dark button
-8. **"Gem som favorit"** — Full-width text link below CTA (replaces desktop's inline heart button)
-9. Delivery info
-10. Return info
-11. Accordion sections (Produktinformation, Om brandet, Levering & Returnering)
-12. "Se mere" tag chips
+1. **Brand name** — large, bold (e.g. "GANT")
+2. **Product name + category** — subtitle text (e.g. "Sneaker Mc Julien – Herresko")
+3. **Price** — Sale price layout: red sale price + strikethrough original price + "-XX%" discount pill badge inline. Non-sale: regular black price
+4. Club benefits
+5. **Color selector** — "Farve: [color name]" label + row of **product thumbnail images** (same as desktop — never plain color dots). Selected thumbnail has checkmark overlay + thicker border. Horizontally scrollable if many
+6. **Size selector** — "Vælg størrelse (EU)" label + grid of square buttons (wraps to multiple rows, ~6 per row). Each button 44px height, 0px border radius, 1px border. Unavailable sizes are grayed out/muted
+7. Size guide link
+8. **"Læg i kurv" CTA** — Full-width dark button with shopping bag icon
+9. **"Gem som favorit"** — Full-width text link below CTA (replaces desktop's inline heart button)
+10. Delivery info — truck icon + "Hurtig levering 1-2 hverdage" + "Fri fragt på ordrer over 499 kr*" with underlined "Læs mere" link
+11. Return info
+12. Accordion sections (Produktinformation, Om brandet, Levering & Returnering)
+13. "Se mere" tag chips
 
 #### Below Product
 - **Recommendation carousels:** 2-column scrollable rows (same sections as desktop)
